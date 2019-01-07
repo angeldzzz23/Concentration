@@ -13,7 +13,11 @@ class ViewController: UIViewController {
     @IBOutlet var cardButtons: [UIButton]!
     @IBOutlet weak var flipCountLabel: UILabel!
     
-    lazy var game: Concentration = Concentration(numberOfPairsOfCards: (cardButtons.count + 1 ) / 2)
+    var numberOfPairsOfCards: Int {
+        return (cardButtons.count + 1 ) / 2
+    }
+    
+    lazy var game: Concentration = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +26,7 @@ class ViewController: UIViewController {
     
     @IBAction func touchCard(_ sender: UIButton) {
         if let buttonIndex = cardButtons.index(of: sender) {
+           print("hello world")
             game.chooseCard(at: buttonIndex)
             updateViewFromModel()
         } else {
@@ -60,6 +65,21 @@ class ViewController: UIViewController {
     }
     
     
+    @IBAction func newGameButtonPressed(_ sender: UIButton) {
+        game.startNewGame(numberOfPairsOfCards: numberOfPairsOfCards)
+        restartEmojiChoices()
+        updateViewFromModel()
+    }
     
+
+    func restartEmojiChoices(){
+        if !emojiChoices.isEmpty {
+            emojiChoices += Array(emoji.values)
+            emoji.removeAll()
+        } else {
+            emojiChoices = Array(emoji.values)
+            emoji.removeAll()
+        }
+    }
 }
 
