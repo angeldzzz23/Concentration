@@ -21,12 +21,11 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+          emojiChoices = game.getRandomTheme(of: emojiChoicesTheme)
     }
     
     @IBAction func touchCard(_ sender: UIButton) {
         if let buttonIndex = cardButtons.index(of: sender) {
-           print("hello world")
             game.chooseCard(at: buttonIndex)
             updateViewFromModel()
         } else {
@@ -51,11 +50,23 @@ class ViewController: UIViewController {
         }
     }
     
-    var emojiChoices = ["🦇","😱","🙀","😈","🎃","👻","🍭","🍬","🍎"]
+    var emojiChoices = [String]()
     var emoji: Dictionary<Int, String> = [:]
+    var emojiChoicesTheme = [
+        "faces": ["😎","😍","🥰","🤪","🤬","🥵"],
+        "halloween": ["🦇","😱","🙀","😈","🎃","👻","🍭","🍬","🍎"],
+        "sports": ["⚽️","🏀","🏈","⚾️","🎾","🏐","🥏"],
+        "weather": ["🌨","⛅️","🌤","🌩","⚡️","🌪","⛈"],
+        "cars": [  "🚗","🚕","🏎","🚔","🚘","🛵","🚜","🚒"],
+        "animals":["🦓","🦒","🦘","🕷","🐋","🐀","🦞","🦖","🐐","🐒"]
+    
+    ]
+  
+    
+  
     
     func emoji(for card: Card) -> String {
-
+      
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
@@ -64,15 +75,14 @@ class ViewController: UIViewController {
         return emoji[card.identifier] ?? "?"
     }
     
-    
     @IBAction func newGameButtonPressed(_ sender: UIButton) {
         game.startNewGame(numberOfPairsOfCards: numberOfPairsOfCards)
         restartEmojiChoices()
         updateViewFromModel()
     }
     
-
     func restartEmojiChoices(){
+        
         if !emojiChoices.isEmpty {
             emojiChoices += Array(emoji.values)
             emoji.removeAll()
@@ -80,6 +90,7 @@ class ViewController: UIViewController {
             emojiChoices = Array(emoji.values)
             emoji.removeAll()
         }
+        emojiChoices = game.getRandomTheme(of: emojiChoicesTheme)
     }
 }
 

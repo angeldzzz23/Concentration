@@ -12,6 +12,8 @@ class Concentration
 {
     var cards = [Card]()
     var indexOfOneAndOnlyFaceUpCard: Int?
+    let themes = ["faces", "halloween", "sports", "weather",  "cars", "animals"]
+    
     
     
     func chooseCard(at index: Int) {
@@ -40,9 +42,13 @@ class Concentration
             cards[card].isMatched = false
         }
         indexOfOneAndOnlyFaceUpCard = nil
+    }
+    
+    func getRandomTheme(of emoji: Dictionary<String, [String]>) -> [String] {
+        let indexTheme = themes[Int(arc4random_uniform(UInt32(themes.count)))]
+        let theme = emoji[indexTheme]! 
         
-        
-        
+        return theme
     }
     
     init(numberOfPairsOfCards: Int ) {
