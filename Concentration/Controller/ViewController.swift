@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     
     @IBOutlet var cardButtons: [UIButton]!
     @IBOutlet weak var flipCountLabel: UILabel!
+    @IBOutlet weak var gameScoreLabel: UILabel!
     
     var numberOfPairsOfCards: Int {
         return (cardButtons.count + 1 ) / 2
@@ -35,6 +36,8 @@ class ViewController: UIViewController {
     
     
     func updateViewFromModel() {
+        gameScoreLabel.text = String(game.gameScore)
+        flipCountLabel.text = String(game.flipCount)
         for i in cardButtons.indices {
             let button = cardButtons[i]
             let card = game.cards[i]
@@ -46,7 +49,6 @@ class ViewController: UIViewController {
                 button.setTitle("", for: .normal)
                 button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0) : #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
             }
-            
         }
     }
     
@@ -63,10 +65,8 @@ class ViewController: UIViewController {
     ]
   
     
-  
-    
     func emoji(for card: Card) -> String {
-      
+        game.chosenBefore = Array(emoji.keys)
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
@@ -76,13 +76,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func newGameButtonPressed(_ sender: UIButton) {
+        gameScoreLabel.text = String(game.gameScore)
         game.startNewGame(numberOfPairsOfCards: numberOfPairsOfCards)
         restartEmojiChoices()
         updateViewFromModel()
     }
     
     func restartEmojiChoices(){
-        
         if !emojiChoices.isEmpty {
             emojiChoices += Array(emoji.values)
             emoji.removeAll()
@@ -93,4 +93,3 @@ class ViewController: UIViewController {
         emojiChoices = game.getRandomTheme(of: emojiChoicesTheme)
     }
 }
-
