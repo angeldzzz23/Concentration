@@ -15,7 +15,9 @@ class Concentration
     var gameScore = 0
     var flipCount = 0
     var chosenBefore = [Int]()
-
+    
+    
+    
     func chooseCard(at index: Int) {
        
         if !cards[index].isMatched {
@@ -36,7 +38,6 @@ class Concentration
                 indexOfOneAndOnlyFaceUpCard = nil
                 
             } else {
-                // ignore this
                 for indexOfFaceDown in cards.indices {
                     cards[indexOfFaceDown].isFaceUp = false
                 }
@@ -47,8 +48,6 @@ class Concentration
         
     }
     
-   
-    
     func startNewGame(numberOfPairsOfCards: Int) {
         gameScore = 0
         flipCount = 0
@@ -58,10 +57,9 @@ class Concentration
         }
         indexOfOneAndOnlyFaceUpCard = nil
     }
-    
     func getRandomTheme(of emoji: Dictionary<String, [String]>) -> [String] {
-        let indexTheme = themes[Int(arc4random_uniform(UInt32(themes.count)))]
-        let theme = emoji[indexTheme]! 
+        let indexTheme: String = themes[Int(arc4random_uniform(UInt32(themes.count)))]
+        let theme = emoji[indexTheme]!
         
         return theme
     }
@@ -73,4 +71,5 @@ class Concentration
         }
         cards.shuffle()
     }
+    
 }
